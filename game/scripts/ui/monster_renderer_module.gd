@@ -3,6 +3,8 @@ class_name MonsterRendererModule extends Control
 # This is a UI panel that handles all visuals for a monster in the battle, 
 # including its sprite, HPbar and name
 
+var bound_monster : Monster
+
 @export 
 var your_pov: bool
 
@@ -27,6 +29,27 @@ var status_label: Label
 @export
 var sprite: Sprite2D
 
-func _ready() -> void:
+func connect_events() -> void:
 	# TODO: listen for events ot connect and update the monster
+	Events.on_monster_added_to_battle.connect(maybe_bind_monster)
+	return
+	
+	
+func maybe_bind_monster(monster: Monster, is_player_monster: bool):
+	if your_pov == is_player_monster:
+		bound_monster = monster
+		move_child(frame, 0 if is_player_monster else 1)
+		update()
+	
+func update():
+	if bound_monster == null:
+		return
+	
+	
+	name_label.text = bound_monster.species.name.to_upper()
+	sprite.texture = bound_monster.species.image
+	hp_bar.max_value = bound_monster.species.max_hp
+	hp_bar.value = bound_monster.hp
+	hp_label.text = "{hp}\\{max_hp}".format({"hp": bound_monster.hp, "max_hp": bound_monster.species.max_hp})
+	
 	return

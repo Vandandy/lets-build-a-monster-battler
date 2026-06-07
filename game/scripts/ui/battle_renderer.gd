@@ -6,6 +6,10 @@ extends Control
 @export var player_mon_state_dump: MonsterDataDump
 
 func _ready() -> void:
+	enemy_mon_module.connect_events()
+	player_mon_module.connect_events()
+	
+	
 	# Connect signal listeners
 	Events.on_battle_is_setup.connect(render)
 	
