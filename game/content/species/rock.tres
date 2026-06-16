@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SpeciesResource" load_steps=4 format=3 uid="uid://yeyewbducuyc"]
+
+[ext_resource type="Script" uid="uid://dthmkpmai1ey3" path="res://scripts/content/species_resource.gd" id="1_6nyu7"]
+[ext_resource type="Texture2D" uid="uid://crewqhbouc5vs" path="res://assets/art/monsters/rock.png" id="1_026xv"]
+[ext_resource type="Script" uid="uid://161kuqt1vbjc" path="res://scripts/content/move_resource.gd" id="3_w4q8p"]
+
+[resource]
+script = ExtResource("1_6nyu7")
+image = ExtResource("1_026xv")
+name = "Rock"
+max_hp = 50
+starter_moves = Array[ExtResource("3_w4q8p")]([])
+type = 2
+metadata/_custom_type_script = "uid://dthmkpmai1ey3"

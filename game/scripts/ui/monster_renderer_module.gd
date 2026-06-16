@@ -30,9 +30,13 @@ var status_label: Label
 var sprite: Sprite2D
 
 func connect_events() -> void:
-	# TODO: listen for events ot connect and update the monster
+	Events.on_monster_updated.connect(maybe_update_monster)
 	Events.on_monster_added_to_battle.connect(maybe_bind_monster)
 	return
+	
+func maybe_update_monster(monster: Monster):
+	if monster == bound_monster:
+		update()
 	
 	
 func maybe_bind_monster(monster: Monster, is_player_monster: bool):
@@ -46,10 +50,10 @@ func update():
 		return
 	
 	
-	name_label.text = bound_monster.species.name.to_upper()
-	sprite.texture = bound_monster.species.image
-	hp_bar.max_value = bound_monster.species.max_hp
+	name_label.text = bound_monster.name.to_upper()
+	sprite.texture = bound_monster.image
+	hp_bar.max_value = bound_monster.max_hp
 	hp_bar.value = bound_monster.hp
-	hp_label.text = "{hp}\\{max_hp}".format({"hp": bound_monster.hp, "max_hp": bound_monster.species.max_hp})
+	hp_label.text = "{hp}\\{max_hp}".format({"hp": bound_monster.hp, "max_hp": bound_monster.max_hp})
 	
 	return

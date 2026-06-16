@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MoveResource" load_steps=5 format=3 uid="uid://d2bxmi80yxnre"]
+
+[ext_resource type="Script" uid="uid://161kuqt1vbjc" path="res://scripts/content/move_resource.gd" id="1_cfgox"]
+[ext_resource type="Script" uid="uid://bby5c46anciak" path="res://scripts/content/targeted_effects/targeted_effect.gd" id="2_rvtjr"]
+[ext_resource type="Script" uid="uid://b5mi3lhxjxso2" path="res://scripts/content/targeted_effects/do_damage.gd" id="3_apfif"]
+
+[sub_resource type="Resource" id="Resource_y10id"]
+script = ExtResource("3_apfif")
+base_damage = 20
+metadata/_custom_type_script = "uid://b5mi3lhxjxso2"
+
+[resource]
+script = ExtResource("1_cfgox")
+name = "Smack"
+usage_max = 25
+use_effects = Array[ExtResource("2_rvtjr")]([SubResource("Resource_y10id")])
+metadata/_custom_type_script = "uid://161kuqt1vbjc"

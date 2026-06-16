@@ -22,6 +22,7 @@ func _ready():
 	Events.on_menu_fight.connect(handle_select_fight)
 	Events.on_menu_select_monster.connect(handle_select_monsters)
 	Events.on_menu_items.connect(handle_select_items)
+	Events.on_menu_option_selected.connect(handle_select_main)
 	
 	# Anytime an option is successfully selected, we want to reutrn to main. Underscored variables ignored.
 	Events.request_option_selected.connect(func(_mode, _index): handle_select_main())

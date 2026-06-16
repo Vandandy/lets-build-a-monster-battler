@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MoveResource" load_steps=5 format=3 uid="uid://7vqaveke64qi"]
+
+[ext_resource type="Script" uid="uid://161kuqt1vbjc" path="res://scripts/content/move_resource.gd" id="1_tecum"]
+[ext_resource type="Script" uid="uid://bby5c46anciak" path="res://scripts/content/targeted_effects/targeted_effect.gd" id="2_0dws7"]
+[ext_resource type="Script" uid="uid://b5mi3lhxjxso2" path="res://scripts/content/targeted_effects/do_damage.gd" id="3_m6w2u"]
+
+[sub_resource type="Resource" id="Resource_cvokw"]
+script = ExtResource("3_m6w2u")
+base_damage = 28
+metadata/_custom_type_script = "uid://b5mi3lhxjxso2"
+
+[resource]
+script = ExtResource("1_tecum")
+name = "Bite"
+usage_max = 20
+use_effects = Array[ExtResource("2_0dws7")]([SubResource("Resource_cvokw")])
+type = 1
+metadata/_custom_type_script = "uid://161kuqt1vbjc"

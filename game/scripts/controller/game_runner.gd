@@ -13,37 +13,66 @@ func _ready():
 	Events.request_menu_fight.connect(handle_request_menu_fight)
 	Events.request_option_selected.connect(handle_menu_option_selected)
 	Events.request_menu_run.connect(handle_run)
+	Events.request_menu_monsters.connect(handle_request_menu_monsters)
 	Events.on_ui_ready.connect(setup_model)
 	
 
 func setup_model():
 	game_state = GameState.new()
 	
+	Events.on_new_game_state_created.emit(game_state)
+	
+	game_state.player = Trainer.new()
+	game_state.opponent = Trainer.new()
+	
 	var species_salamander = preload("res://content/species/salamander.tres")
 	var species_turtle = preload("res://content/species/turtle.tres")
+	var species_dino = preload("res://content/species/dino.tres")
 	
-	var monster1 = Monster.new()
-	monster1.species = species_salamander
-	monster1.hp = species_salamander.max_hp
+	var monster1 = MonsterController.create_monster(species_salamander)
+	var monster2 = MonsterController.create_monster(species_turtle, "Squirt")
+	var monster3 = MonsterController.create_monster(species_dino, "RAWR")
 	
-	var monster2 = Monster.new()
-	monster2.species = species_turtle
-	monster2.hp	= species_turtle.max_hp
 	
-	game_state.player_monster = monster1
+	
+	game_state.player.monsters.append(monster1)
+	game_state.player.monsters.append(monster3)
+	game_state.player.current_monster = monster1
+	
 	Events.on_monster_added_to_battle.emit(monster1, true)
-	game_state.opponent_monster = monster2
+	
+	game_state.opponent.monsters.append(monster2)
+	game_state.opponent.current_monster = monster2
+	
 	Events.on_monster_added_to_battle.emit(monster2, false)
 	
 	return
 	
 	
 func handle_request_menu_fight():
-	var labels: Array[StringEnabled] = [StringEnabled.new("A", true), StringEnabled.new("B", false)]
+	var labels: Array[StringEnabled] = []
+	
+	for move in game_state.player.current_monster.moves:
+		var label = StringEnabled.new(move.resource.name, move.usages > 0)
+		labels.append(label)
+		
+	
 	Events.on_menu_fight.emit(labels)
+	
+func handle_request_menu_monsters():
+	var labels: Array[StringEnabled] = []
+	for monster in game_state.player.monsters:
+		labels.append(StringEnabled.new(monster.name, monster.hp>0))
+	Events.on_menu_select_monster.emit(labels)
 
 func handle_menu_option_selected(mode: INTERACTION_MODE, index: int):
-	print("Selecting mode: %s  number: %d"%[mode, index])
+	#Just handling player case here
+	match(mode):
+		INTERACTION_MODE.MON:
+			TrainerController.add_trainer_monster_to_battle(game_state.player, index)
+		INTERACTION_MODE.FIGHT:
+			MonsterController.use_monster_move_at_index(game_state.player.current_monster, index)
+	Events.on_menu_option_selected.emit()
 	
 
 func handle_run(): 

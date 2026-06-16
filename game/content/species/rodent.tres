@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SpeciesResource" load_steps=3 format=3 uid="uid://mgbs3xabnmod"]
+
+[ext_resource type="Texture2D" uid="uid://bugboywo4jodp" path="res://assets/art/monsters/rodent.png" id="1_dtcyu"]
+[ext_resource type="Script" uid="uid://dthmkpmai1ey3" path="res://scripts/content/species_resource.gd" id="1_p4hgg"]
+
+[resource]
+script = ExtResource("1_p4hgg")
+image = ExtResource("1_dtcyu")
+name = "Shifu"
+max_hp = 15
+metadata/_custom_type_script = "uid://dthmkpmai1ey3"

@@ -9,6 +9,7 @@ signal request_menu_monsters
 signal request_menu_back
 signal request_menu_items
 signal request_menu_run
+signal request_menu_option_by_index
 
 # Events sent from controllers 
 signal on_battle_is_setup
@@ -19,6 +20,9 @@ signal on_menu_fight
 signal on_menu_select_monster
 signal on_menu_items
 signal on_monster_added_to_battle
+signal on_new_game_state_created
+signal on_menu_option_selected
+signal on_monster_updated
 
 # Events sent internally
 signal request_log
