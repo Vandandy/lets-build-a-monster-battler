@@ -1,9 +1,16 @@
 extends Node
 
-var game_state
+var game_state: GameState
+var rng: RandomNumberGenerator
+
 
 func _ready() -> void:
-	Events.on_new_game_state_created.connect(func(state): game_state = state)
+	Events.on_new_game_state_created.connect(get_controller_components)
+	
+	
+func get_controller_components():
+	game_state = GameRunner.game_state
+	rng = GameRunner.rng
 	
 func get_monster_opponent(monster: Monster):
 	if monster == game_state.player_monster:
@@ -13,15 +20,30 @@ func get_monster_opponent(monster: Monster):
 		return game_state.player_monster
 	
 func adjust_monster_hitpoints(monster: Monster, amount: int):
-	monster.hp += amount
+	monster.hp = clamp(monster.hp + amount, 0, monster.max_hp)
 	
 	#TODO: check for fainting
 	Events.on_monster_updated.emit(monster)
 
 func use_monster_move_at_index(monster: Monster, index: int):
 	var move = monster.moves[index]
+	if move.usages <= 0 : 
+		return
+	move.usages -= 1
+	var use_string = move.use_message.format({"user_name": monster.name, "move_name": move.name})
+	Events.request_log.emit(use_string)
+	
+	var hit = rng.randf() < move.base_accuracy
+	
+	if !hit:
+		Events.request_log.emit("But it missed")
+	 
 	for effect in move.resource.use_effects:
-		effect._do(monster, move, game_state)
+		if effect._should_do(hit):
+			effect._do(monster, move, game_state)
+	
+	
+	
 	
 	
 func create_monster(species: SpeciesResource, nickname: String = "") -> Monster:
